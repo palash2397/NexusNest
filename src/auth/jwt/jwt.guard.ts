@@ -46,3 +46,6 @@ export class JwtAuthGuard implements CanActivate {
     }
   }
 }
+
+// command
+// nest g guard auth/jwt

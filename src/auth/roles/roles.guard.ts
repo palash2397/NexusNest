@@ -24,3 +24,7 @@ export class RoleGuard implements CanActivate {
     return true;
   }
 }
+
+
+// command
+// nest g guard auth/roles

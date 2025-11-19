@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
 import { FoundationModule } from './foundation/foundation.module';
+import { FaqModule } from './faq/faq.module';
 
 
 @Module({
@@ -15,6 +16,7 @@ import { FoundationModule } from './foundation/foundation.module';
     UsersModule,
     AdminModule,
     FoundationModule,
+    FaqModule,
   ],
   controllers: [],
   providers: [],
