@@ -1,20 +1,29 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import morgan from 'morgan';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(morgan('dev'));
 
   // enable global validation for DTOs
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // removes extra fields
-      forbidNonWhitelisted: true, // throws error if extra fields present
-      transform: true, // auto transform payloads to DTO classes
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
+
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads/',
+  });
 
   app.enableCors({
     origin: '*',

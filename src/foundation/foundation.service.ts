@@ -59,9 +59,11 @@ export class FoundationService {
       return new ApiResponse(500, {}, `Internal server error`);
     }
   }
-  async create(dto: CreateFoundationDto, id: string) {
+  async create(dto: CreateFoundationDto, file: any, id: string) {
     try {
       const { name, description, website } = dto;
+
+      console.log(`file -------------->`,file);
 
       const user = await this.userModel.findById(id);
       if (!user) return new ApiResponse(404, {}, `User not found`);
@@ -70,6 +72,7 @@ export class FoundationService {
         name,
         description,
         website: website,
+        logo: file ? file.path : null,
         userId: user._id,
       });
 
