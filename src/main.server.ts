@@ -1,8 +1,9 @@
-// src/main.server.ts
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import serverless from 'serverless-http';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import serverless from 'serverless-http';
+import { ValidationPipe } from '@nestjs/common';
+import morgan from 'morgan';
 
 let server: any;
 
@@ -11,20 +12,41 @@ async function bootstrap() {
     logger: false,
   });
 
-  // replicate any global setup you have in main.ts (pipes, cors, prefix)
+  // Global prefix
   app.setGlobalPrefix('api/v1');
-  app
-    .useGlobalPipes
-    // same config as in main.ts
-    ();
 
-  await app.init(); // important, don't call listen()
+  // Logger (optional)
+  app.use(morgan('dev'));
+
+  // Global validation pipe
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+
+  // CORS enable
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,POST,PUT,PATCH,DELETE',
+  });
+
+  // Initialize Nest in serverless mode
+  await app.init();
+
   const expressApp = app.getHttpAdapter().getInstance();
   return serverless(expressApp);
 }
 
-// exported handler for Vercel
+// This is the handler Vercel will call
 export const handler = async (req: any, res: any) => {
-  if (!server) server = await bootstrap();
+  if (!server) {
+    server = await bootstrap();
+  }
   return server(req, res);
 };
