@@ -15,10 +15,4 @@ import { AdminService } from './admin.service';
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
-
-  // @Post('campaign/create')
-  // @UseGuards(JwtAuthGuard, RoleGuard)
-  // createCampaign(@Body() dto: CreateCampaignDto, @Req() req) {
-  //   return this.foundationService.createCampaign(dto, req.user.id!);
-  // }
 }

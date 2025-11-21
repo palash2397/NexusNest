@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
 import { FoundationModule } from './foundation/foundation.module';
 import { FaqModule } from './faq/faq.module';
+import { MailModule } from './mail/mail.module';
 
 
 @Module({
@@ -17,6 +18,8 @@ import { FaqModule } from './faq/faq.module';
     AdminModule,
     FoundationModule,
     FaqModule,
+    MailModule,
+ 
   ],
   controllers: [],
   providers: [],

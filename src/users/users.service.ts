@@ -8,6 +8,8 @@ import { generateOtp, getExpirationTime } from '../utils/helper';
 import * as bcrypt from 'bcryptjs';
 import * as Jwt from 'jsonwebtoken';
 
+import { MailService } from '../mail/mail.service';
+
 import { RegisterUserDto } from './dto/register-user.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { ResendOtpDto } from './dto/resend-otp.dto';
@@ -18,6 +20,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    private readonly mailService: MailService,
   ) {}
 
   async register(dto: RegisterUserDto) {
@@ -77,8 +80,8 @@ export class UsersService {
       //     403,
       //   );
 
+      // await this.mailService.sendOtpMail(fullName, otp, email);
       await user.save();
-
       console.log(`OTP generated --> ${otp}`);
 
       // 5. Final response
